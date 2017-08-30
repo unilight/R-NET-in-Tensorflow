@@ -11,7 +11,7 @@
 			"char_max_length" : 37,
 			"char_vocab_size" : 1368, 
 			"char_emb_mat_dim" : 8,
-			"p_length":30,
+			"p_length":300,
 			"q_length":30,
 			"a_length":20,
 			"span_length":20
@@ -27,7 +27,7 @@
 			"char_max_length" : 37,
 			"char_vocab_size" : 1368, 
 			"char_emb_mat_dim" : 8,
-			"p_length":30,
+			"p_length":300,
 			"q_length":30,
 			"a_length":20,
 			"span_length":20
