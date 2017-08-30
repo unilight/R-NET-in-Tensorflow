@@ -1,0 +1,36 @@
+{  
+	"rnet":{  
+		"train":{  
+			"glove": "300",
+			"share_context_LSTM":true,
+			"in_keep_prob":0.8,
+			"batch_size":60,
+			"state_size":75,
+			"emb_dim" : 300,
+			"word_emb_dim" : 300,
+			"char_max_length" : 37,
+			"char_vocab_size" : 1368, 
+			"char_emb_mat_dim" : 8,
+			"p_length":30,
+			"q_length":30,
+			"a_length":20,
+			"span_length":20
+		},
+		"dev":{  
+			"glove":"300",
+			"share_context_LSTM":true,
+			"in_keep_prob":1.0,
+			"batch_size":60,
+			"state_size":75,
+			"emb_dim":300,
+			"word_emb_dim" : 300, 
+			"char_max_length" : 37,
+			"char_vocab_size" : 1368, 
+			"char_emb_mat_dim" : 8,
+			"p_length":30,
+			"q_length":30,
+			"a_length":20,
+			"span_length":20
+		}
+	}
+}
