@@ -2,7 +2,13 @@
 
 * This repository is a Tensorflow implementation of [R-NET](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/05/r-net.pdf), a neural network designed to solve the Question Answering (QA) task. 
 * This implementation is specifically designed for [SQuAD](stanford-qa.com) , a large-scale dataset drawing attention in the field of QA recently.
-* If you have any question, contact b03902012@ntu.edu.tw.
+* If you have any questions, contact b03902012@ntu.edu.tw.
+
+### 17.11.10 Updates:
+- I'd like to thank _Elías Jónsson_ for pointing out that there's a problem in the mapping between characters and their indices. Previously, the indices for training and testing (dev set) were inconsistent. Actually, the mapping for testing shouldn't be constructed. During testing, if the machine sees a character it has not seen in the training set, it should mark it as OOV. So the table is now constructed using only the training set, and is used in both training and testing.
+- As some are asking about how to turn the character embeddings off, one can now avoid using character embeddings by changing the hyperparameter in `Models/config.json`.
+- I applied dropout to various components in the model, including all LSTM cells, passage & question encoding, question-passage matching, self-attention, and question representation. This led to improvement of about 3%.
+- As I read the original paper more carefully, I found that the authors used Adadelta as optimizer, and 3 layers of bi-GRU were used to encode both passage and question. Changing from Adam to Adadelta led to roughly 1% improvement. In my experiments, after stacking layers, the epochs required for convergence increased, and I found that instead of stacking 3 layers, 2 layers led to better performances. Details are depicted in the current results section.
 
 
 ## Dependency
@@ -49,8 +55,11 @@ python Results/evaluate-v1.1.py Data/dev-v1.1.json Results/rnet_prediction.txt
 | Model | Dev EM Score | Dev F1 Score |
 | -------- | -------- | -------- |
 | Original Paper | 71.1 | 79.5 |
-| My Implementation | 60.1 | 68.9 |
-| My Implementation(w/o char emb)| 57.8 | 67.9|
+| My (Adadelta, 2 layer, dropouts, w/o char emb) | 62.6 | 71.5 |
+| My (Adadelta, 1 layer, dropouts, w/o char emb) | 61.0 | 70.3 |
+| My (Adam, 1 layer, dropouts, w/o char emb) | 60.8 | 70.5 |
+| My (Adam, 1 layer, w/o char emb)| 57.8 | 67.9|
+| My (Adam, 1 layer, w/ char emb) | 60.1 | 68.9 |
 
 You can find the [current leaderboard](stanford-qa.com) and compare with other models.
 
@@ -82,5 +91,4 @@ CUDA_VISIBLE_DEVICES="" python rnet.py
     * `p_length`
     * Word embedding dimension: change from 300d GloVe vectors to 100d.
     
-3. Don't use character embeddings. To achieve this one might have to hack into `Models/models_rnet`. I'll try to make this a parameter in `Models/config.json` but this feature won't be soon. 
-According to [Bi-DAF](https://arxiv.org/pdf/1611.01603.pdf), character embeddings don't help much. However, Bi-DAF uses 1D-CNNs to generate the character embeddings, while R-NET uses RNNs. As shown in the previous section, the performance dropped for 2%. Further investigation is needed for this part.
+3. Don't use character embeddings. According to [Bi-DAF](https://arxiv.org/pdf/1611.01603.pdf), character embeddings don't help much. However, Bi-DAF uses 1D-CNNs to generate the character embeddings, while R-NET uses RNNs. As shown in the previous section, the performance dropped for 2%. Further investigation is needed for this part.
