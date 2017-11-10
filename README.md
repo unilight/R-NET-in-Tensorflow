@@ -70,8 +70,7 @@ You can find the [current leaderboard](stanford-qa.com) and compare with other m
 As shown above, I still fail to reproduce the results. I think there are some technical details that draw my concern:
 
 1. Data Preprocessing. I have tried two preprocessing approaches, one of which is used in the implementation of [Match-LSTM](https://github.com/shuohangwang/SeqMatchSeq/blob/master/preprocess.py), and the other is used in the implementation of [Bi-DAF](https://github.com/allenai/bi-att-flow/blob/master/squad/prepro.py). While the latter approach includes lots of reasonable processing, I chose the former one empirically since it yields better performance.
-2. **No Dropout has yet been applied to my implementation.** I am currently conducting experiments on this.
-3. As pointed out in another [implementation of R-NET in Keras](https://github.com/YerevaNN/R-NET-in-Keras), 
+2. As pointed out in another [implementation of R-NET in Keras](https://github.com/YerevaNN/R-NET-in-Keras), 
     > The first formula in (11) of the report contains a strange summand `W_v^Q V_r^Q`. Both tensors are trainable and are not used anywhere else in the network. We have replaced this product with a single trainable vector.
 
     However, instead of replacing the product with a single trainable vector, I followed the notation and still used two vectors.
