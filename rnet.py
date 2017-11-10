@@ -26,7 +26,8 @@ def run():
 	
 	rnet_model = model_rnet.R_NET(modOpts)
 	input_tensors, loss, acc, pred_si, pred_ei = rnet_model.build_model()
-	train_op = tf.train.AdamOptimizer(args.learning_rate).minimize(loss)
+	#train_op = tf.train.AdamOptimizer(args.learning_rate).minimize(loss)
+	train_op = tf.train.AdadeltaOptimizer(1.0, rho=0.95, epsilon=1e-06,).minimize(loss)
 
 	#saver
 	saver = tf.train.Saver()
