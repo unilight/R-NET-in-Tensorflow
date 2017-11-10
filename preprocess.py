@@ -21,8 +21,10 @@ class DataProcessor:
 		self.opts = opts
 		data_path = os.path.join('Data', "data_{}.json".format(data_type))
 		shared_path = os.path.join('Data', "shared_{}.json".format(data_type))
+		idx_path = os.path.join('Data', "idx_table.json")
 		self.data = self.load_data(data_path)
 		self.shared = self.load_data(shared_path)
+		self.idx_table = self.load_data(idx_path)
 
 		# paragraph length filter: (train only)
 		if self.data_type == 'train':
@@ -71,7 +73,7 @@ class DataProcessor:
 				except KeyError:
 					pass
 				for k, char in enumerate(p[j]):
-					paragraph_c[count][j][k] = self.shared['char2idx'][char]
+					paragraph_c[count][j][k] = self.idx_table['char2idx'][char]
 			
 			for j in range(len(q)):
 				if j >= opts['q_length']:
@@ -81,7 +83,7 @@ class DataProcessor:
 				except KeyError:
 					pass
 				for k, char in enumerate(q[j]):
-					question_c[count][j][k] = self.shared['char2idx'][char]
+					question_c[count][j][k] = self.idx_table['char2idx'][char]
 			
 			si, ei = sample['answer'][0][0], sample['answer'][0][-1]
 			answer_si[count][si] = 1.0
@@ -132,7 +134,7 @@ class DataProcessor:
 					#print('{} not in GloVe'.format(p[j]))
 					pass
 				for k, char in enumerate(p[j]):
-					paragraph_c[count][j][k] = self.shared['char2idx'][char]
+					paragraph_c[count][j][k] = self.idx_table['char2idx'][char]
 			
 			for j in range(len(q)):
 				if j >= opts['q_length']:
@@ -143,7 +145,7 @@ class DataProcessor:
 					pass
 					#print('{} not in GloVe'.format(triplet['question'][j].lower()))
 				for k, char in enumerate(q[j]):
-					question_c[count][j][k] = self.shared['char2idx'][char]
+					question_c[count][j][k] = self.idx_table['char2idx'][char]
 			
 			answer_si[count] = [ans[0]  for ans in sample['answer']]
 			answer_ei[count] = [ans[-1] for ans in sample['answer']]
@@ -303,8 +305,6 @@ def generate_seq(data_type):
 			  'paragraphs_original_sent': articles_original_sent,
 			  'glove100': w2v_100,
 			  'glove300': w2v_300,
-			  'char2idx': char2idx,
-			  'idx2char': idx2char,
 			  }
 	print('Saving...')
 	with open(os.path.join('Data','data_'+data_type+".json"), 'w') as f:
@@ -312,7 +312,15 @@ def generate_seq(data_type):
 	with open(os.path.join('Data','shared_'+data_type+".json"), 'w') as f:
 		json.dump(shared, f)
 
-	print('SQuAD preprossing finished!')
+	if data_type == 'train':
+		char2idx, idx2char = get_char_vocab(word_counter)
+		idx_table = {'char2idx': char2idx,
+					 'idx2char': idx2char,
+					 }
+		with open(os.path.join('Data','idx_table.json'), 'w') as f:
+			json.dump(idx_table, f)
+
+	print('SQuAD '+data_type+' preprossing finished!')
 
 def read_data(data_type, opts):
 	return DataProcessor(data_type, opts)

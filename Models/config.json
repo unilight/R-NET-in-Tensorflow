@@ -3,6 +3,7 @@
 		"train":{  
 			"glove": "300",
 			"share_context_LSTM":true,
+			"char_emb":false,
 			"in_keep_prob":0.8,
 			"batch_size":60,
 			"state_size":75,
@@ -19,6 +20,7 @@
 		"dev":{  
 			"glove":"300",
 			"share_context_LSTM":true,
+			"char_emb":false,
 			"in_keep_prob":1.0,
 			"batch_size":60,
 			"state_size":75,

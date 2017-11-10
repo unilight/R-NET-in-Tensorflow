@@ -52,14 +52,19 @@ def run():
 		EM = 0.0
 		while batch_no < num_batches:
 			tensor_dict, idxs = dp.get_training_batch(rl[batch_no])
-			_, loss_value, accuracy, predictions_si, predictions_ei = sess.run([train_op, loss, acc, pred_si, pred_ei], feed_dict={
+			feed_dict = {
 				input_tensors['p']:tensor_dict['paragraph'],
 				input_tensors['q']:tensor_dict['question'],
-				input_tensors['pc']:tensor_dict['paragraph_c'],
-				input_tensors['qc']:tensor_dict['question_c'],
 				input_tensors['a_si']:tensor_dict['answer_si'],
 				input_tensors['a_ei']:tensor_dict['answer_ei'],
-			})
+			}
+			if modOpts['char_emb']:
+				feed_dict.update({
+						input_tensors['pc']:tensor_dict['paragraph_c'],
+						input_tensors['qc']:tensor_dict['question_c'],
+					})
+			_, loss_value, accuracy, predictions_si, predictions_ei = sess.run(
+					[train_op, loss, acc, pred_si, pred_ei], feed_dict=feed_dict)
 			batch_no += 1
 			LOSS += loss_value
 			EM += accuracy
