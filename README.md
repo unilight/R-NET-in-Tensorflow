@@ -61,7 +61,7 @@ python Results/evaluate-v1.1.py Data/dev-v1.1.json Results/rnet_prediction.txt
 | My (Adam, 1 layer, w/o char emb)| 57.8 | 67.9|
 | My (Adam, 1 layer, w/ char emb) | 60.1 | 68.9 |
 
-You can find the [current leaderboard](stanford-qa.com) and compare with other models.
+You can find the [current leaderboard](https://rajpurkar.github.io/SQuAD-explorer/) and compare with other models.
 
 ## Discussion
 
