@@ -130,22 +130,22 @@ class DataProcessor:
 					break
 				try:
 					paragraph[count][j][:opts['word_emb_dim']] = self.shared['glove'+opts['glove']][p[j]]
+					for k, char in enumerate(p[j]):
+						paragraph_c[count][j][k] = self.idx_table['char2idx'][char]
 				except KeyError:
 					#print('{} not in GloVe'.format(p[j]))
 					pass
-				for k, char in enumerate(p[j]):
-					paragraph_c[count][j][k] = self.idx_table['char2idx'][char]
 			
 			for j in range(len(q)):
 				if j >= opts['q_length']:
 					break
 				try:
 					question[count][j] = self.shared['glove'+opts['glove']][q[j]]
+					for k, char in enumerate(q[j]):
+						question_c[count][j][k] = self.idx_table['char2idx'][char]
 				except KeyError:
 					pass
 					#print('{} not in GloVe'.format(triplet['question'][j].lower()))
-				for k, char in enumerate(q[j]):
-					question_c[count][j][k] = self.idx_table['char2idx'][char]
 			
 			answer_si[count] = [ans[0]  for ans in sample['answer']]
 			answer_ei[count] = [ans[-1] for ans in sample['answer']]

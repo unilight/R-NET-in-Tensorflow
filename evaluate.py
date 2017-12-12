@@ -50,14 +50,18 @@ def run():
 	for batch_no in range(num_batches):
 		if args.model == 'rnet':
 			context, context_original, paragraph, question, paragraph_c, question_c, answer_si, answer_ei, ID, n = dp.get_testing_batch(batch_no)
-			predictions_si, predictions_ei = sess.run([pred_si, pred_ei], feed_dict={
+			feed_dict={
 				input_tensors['p']:paragraph,
 				input_tensors['q']:question,
-				input_tensors['pc']:paragraph_c,
-				input_tensors['qc']:question_c,
 				input_tensors['a_si']:empty_answer_idx,
 				input_tensors['a_ei']:empty_answer_idx,
-			})
+			}
+			if modOpts['char_emb']:
+				feed_dict.update({
+						input_tensors['pc']:tensor_dict['paragraph_c'],
+						input_tensors['qc']:tensor_dict['question_c'],
+					})
+			predictions_si, predictions_ei = sess.run([pred_si, pred_ei], feed_dict=feed_dict)
 		for i in range(n):
 			parag = context[i]
 			f1 = []
