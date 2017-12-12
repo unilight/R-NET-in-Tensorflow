@@ -4,7 +4,12 @@
 * This implementation is specifically designed for [SQuAD](stanford-qa.com) , a large-scale dataset drawing attention in the field of QA recently.
 * If you have any questions, contact b03902012@ntu.edu.tw.
 
-### 17.11.10 Updates:
+## Updates and Acknowledgements
+
+### 17.12.12
+- I'd like to thank _Fan Yang_ for pointing out several bugs when evaluating models. First, the model to be evaluated needs to be explicitly specified when executing the `evaluate.py` program. See the Usage section below. Also, I fixed some problems when loading characters.
+
+### 17.11.10
 - I'd like to thank _Elías Jónsson_ for pointing out that there's a problem in the mapping between characters and their indices. Previously, the indices for training and testing (dev set) were inconsistent. Actually, the mapping for testing shouldn't be constructed. During testing, if the machine sees a character it has not seen in the training set, it should mark it as OOV. So the table is now constructed using only the training set, and is used in both training and testing.
 - As some are asking about how to turn the character embeddings off, one can now avoid using character embeddings by changing the hyperparameter in `Models/config.json`.
 - I applied dropout to various components in the model, including all LSTM cells, passage & question encoding, question-passage matching, self-attention, and question representation. This led to improvement of about 3%.
