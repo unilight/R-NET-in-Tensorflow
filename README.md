@@ -6,6 +6,9 @@
 
 ## Updates and Acknowledgements
 
+### 17.12.30
+- As some have required recently, I have released a set of trained model weights. Details can be found in the Current Results section below.
+
 ### 17.12.12
 - I'd like to thank _Fan Yang_ for pointing out several bugs when evaluating models. First, the model to be evaluated needs to be explicitly specified when executing the `evaluate.py` program. See the Usage section below. Also, I fixed some problems when loading characters.
 
@@ -82,6 +85,9 @@ python Results/evaluate-v1.1.py Data/dev-v1.1.json Results/rnet_prediction.txt
 | My (Adam, 1 layer, w/ char emb) | 60.1 | 68.9 |
 
 You can find the [current leaderboard](https://rajpurkar.github.io/SQuAD-explorer/) and compare with other models.
+
+### Trained model weights
+As some have required recently, a set of trained model weights can be downloaded [here](https://slam.iis.sinica.edu.tw/demo/RNet/release.zip). Unzip and you can find 3 files. Put the 3 files in `Models/save/` and evaluate on it by following the instruction above. This set of parameter was obtained by training for 28 epochs, using current settings, and achieved 62.2/71.5 on the dev set. I didn't save each set of model weights when I ran the experiments originally, so I reran the experiment, causing a slight degration compared with the best score on the table above. I want to clarify that the difference may come from random initialization, so feel free to train your own model weights.
 
 ## Discussion
 
